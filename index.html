@@ -13,10 +13,20 @@
             border: 1px solid red;
             image-rendering: pixelated;
         }
+
+        .enemy{
+            border: 2px solid gray;
+            margin: 5px;
+            cursor: pointer;
+        }
+
+        .enemy.selected{
+            border: 2px solid blue;
+        }
     </style>
 </head>
 <body>
-    <div>
+    <div id="ui">
         <button id="addSegmentBtn">Add Segment</button>
         <button id="exportBtn">Export</button>
         <button id="loadBtn">Load</button>
@@ -24,6 +34,7 @@
     <div id="container">
 
     </div>
+    <script src="enemies.js"></script>
     <script src="segment.js"></script>
     <script src="main.js"></script>
 </body>

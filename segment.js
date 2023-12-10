@@ -30,11 +30,19 @@ class Segment {
     }
 
     handle_CLICK(event) {
+        
         const rect = this.canvas.getBoundingClientRect(); // Gets the size of the element and its position relative to the viewport
         const scaleX = this.canvas.width / rect.width; // Determines the X scale factor
         
         let x = (event.clientX - rect.left) * scaleX;
     
+        if (selectedEnemy) {
+            const enemy = {...selectedEnemy};
+            enemy.x = Math.round(x);
+            this.enemies.push(enemy);
+            return;
+        }
+
         let tileX = Math.floor(x / GROUND_SIZE);
         this.ground[tileX] = this.ground[tileX] === 1 ? 0 : 1;
     }
@@ -47,6 +55,11 @@ class Segment {
             if (this.ground[i] == 1) {
                 ctx.drawImage(GROUND_IMAGE, i * GROUND_SIZE, SCREEN_HEIGHT - GROUND_SIZE);
             }
+        }
+
+        for(let i = 0; i < this.enemies.length; i++) {
+            let enemy = this.enemies[i];
+            ctx.drawImage(enemy.image, enemy.x, enemy.y);
         }
     }
 }

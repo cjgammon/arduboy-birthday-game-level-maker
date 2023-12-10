@@ -7,6 +7,8 @@ const GROUND_SIZE = 6;
 const container = document.getElementById("container");
 const addSegmentBtn = document.getElementById("addSegmentBtn");
 
+
+
 let segments = [];
 
 init();
@@ -16,7 +18,6 @@ function init() {
         addSegment()
     }
     addSegmentBtn.addEventListener("click", addSegment);
-    //window.addEventListener("click", handle_CLICK);
     setInterval(draw, 1000/60);
 }
 
