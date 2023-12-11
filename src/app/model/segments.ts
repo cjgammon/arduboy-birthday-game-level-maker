@@ -112,6 +112,44 @@ export class SegmentModel {
       });
     }
   }
+
+  export() {
+    let cppString = "{\n";
+
+    this.segments.forEach((segment, index) => {
+      cppString += `    // segment ${index}\n`;
+      cppString += `  {\n`;
+      cppString += `    {${segment.ground.join(", ")}},\n`;
+      cppString += `    {\n`;
+
+      segment.enemies.forEach((enemy) => {
+        //cppString += `      {${enemy.join(", ")}}, // Enemy\n`;
+        cppString += `      {},\n`;
+      });
+
+      cppString += `    },\n`;
+      cppString += `    {\n`;
+
+      segment.items.forEach((item) => {
+        //cppString += `      {${item.join(", ")}}, // Item\n`;
+        cppString += `      {},\n`;
+      });
+
+      cppString += `    }\n`;
+      cppString += `  },\n`;
+    });
+
+    cppString += "};\n";
+
+    const blob = new Blob([cppString], { type: "text/plain" });
+
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "segments.cpp";
+    a.click();
+    URL.revokeObjectURL(url);
+  }
 }
 
 export default new SegmentModel();

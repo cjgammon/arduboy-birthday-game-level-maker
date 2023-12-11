@@ -8,6 +8,7 @@ export class Toolbar extends LitElement {
     return html`
       <div>
         <button @click=${() => segmentModel.addSegment()}>+</button>
+        <button @click=${() => segmentModel.export()}>Export</button>
       </div>
     `;
   }
