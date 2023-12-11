@@ -18,16 +18,16 @@ export class SegmentElement extends LitElement {
 
   handle_segment_CLICK(e: Event) {
     if (appModel.selectedEnemy !== null) {
-      //get rect and adjust x and y for scale
       const rect = e.target.getBoundingClientRect();
       let x = e.clientX - rect.left;
-      let y = e.clientY - rect.top;
 
-      x = x / 4;
-      y = y / 4;
-
-      console.log("scale", x, y, appModel.selectedEnemy);
+      const enemyDefinition = ENEMY_DEFINITIONS.find(
+        (d) => d.type === appModel.selectedEnemy
+      );
+      const y = enemyDefinition.y;
+      x = Math.round(x / 4);
       this.segment.addEnemy(appModel.selectedEnemy, x, y);
+      this.requestUpdate();
     }
   }
 
@@ -38,7 +38,7 @@ export class SegmentElement extends LitElement {
           ${this.segment.enemies.map((enemy) => {
             return html`<div
               class="enemy"
-              style="left: ${enemy[1] * 4}px; top: ${enemy[2] * 4}px"
+              style="left: ${enemy[1]}px; top: ${enemy[2]}px"
             >
               <img src="${getEnemyImage(enemy[0])}" />
             </div>`;

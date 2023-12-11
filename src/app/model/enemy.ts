@@ -34,24 +34,3 @@ export function getEnemyImage(type: number) {
     throw new Error("Unknown enemy type");
   }
 }
-
-/*
-export class Enemy {
-  type: number;
-  x: number;
-  y: number;
-  src: string;
-  constructor(type, x, y) {
-    this.type = type;
-    this.x = x;
-    this.y = y;
-
-    const definition = ENEMY_DEFINITIONS.find((d) => d.type === type);
-    if (definition) {
-      this.src = definition.src;
-    } else {
-      throw new Error("Unknown enemy type");
-    }
-  }
-}
-*/

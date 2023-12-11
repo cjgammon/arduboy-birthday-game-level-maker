@@ -32,26 +32,26 @@ export class Segment implements ISegment {
 
     makeObservable(this, {
       ground: observable,
-      enemies: observable.deep,
+      enemies: observable,
       items: observable,
       toggleGroundTile: action,
       //addEnemy: action,
     });
 
     autorun(() => {
-      console.log("autorun");
       const event = new CustomEvent("segment-updated", {
         detail: {
           segment: this,
+          ground: this.ground,
+          enemies: this.enemies,
+          items: this.items,
         },
       });
-      console.log("go");
       window.dispatchEvent(event);
     });
   }
 
   toggleGroundTile(index: number) {
-    console.log("toggle ground tile", index);
     const ground = [...this.ground];
     ground[index] = ground[index] === 0 ? 1 : 0;
     this.ground = ground;
@@ -62,7 +62,6 @@ export class Segment implements ISegment {
     //const enemy = new Enemy(type, x, y);
     const enemy = [type, x, y];
     enemies.push(enemy);
-    console.log("add enemy", enemy, enemies);
     this.enemies = enemies;
   }
 
@@ -144,9 +143,8 @@ export class SegmentModel {
       cppString += `    {${segment.ground.join(", ")}},\n`;
       cppString += `    {\n`;
 
-      segment.enemies.forEach(() => {
-        //cppString += `      {${enemy.join(", ")}}, // Enemy\n`;
-        cppString += `      {},\n`;
+      segment.enemies.forEach((enemies) => {
+        cppString += `      {${enemies.join(", ")}}, // Enemy\n`;
       });
 
       cppString += `    },\n`;
