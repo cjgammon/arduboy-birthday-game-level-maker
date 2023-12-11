@@ -122,7 +122,7 @@ export class SegmentModel {
       cppString += `    {${segment.ground.join(", ")}},\n`;
       cppString += `    {\n`;
 
-      segment.enemies.forEach((enemy) => {
+      segment.enemies.forEach(() => {
         //cppString += `      {${enemy.join(", ")}}, // Enemy\n`;
         cppString += `      {},\n`;
       });
@@ -130,7 +130,7 @@ export class SegmentModel {
       cppString += `    },\n`;
       cppString += `    {\n`;
 
-      segment.items.forEach((item) => {
+      segment.items.forEach(() => {
         //cppString += `      {${item.join(", ")}}, // Item\n`;
         cppString += `      {},\n`;
       });
