@@ -16,17 +16,18 @@ export class SegmentElement extends LitElement {
   @property({ type: Object })
   segment!: Segment;
 
-  handle_segment_CLICK(e: Event) {
-    if (appModel.selectedEnemy !== null) {
+  handle_segment_CLICK(e: MouseEvent) {
+    if (appModel.selectedEnemy !== null && e.target instanceof HTMLElement) {
       const rect = e.target.getBoundingClientRect();
       let x = e.clientX - rect.left;
 
       const enemyDefinition = ENEMY_DEFINITIONS.find(
         (d) => d.type === appModel.selectedEnemy
       );
-      const y = enemyDefinition.y;
+
+      const y = enemyDefinition!.y;
       x = Math.round(x / 4);
-      this.segment.addEnemy(appModel.selectedEnemy, x, y);
+      this.segment.addEnemy(appModel.selectedEnemy!, x, y);
       this.requestUpdate();
     }
   }
@@ -34,7 +35,10 @@ export class SegmentElement extends LitElement {
   render() {
     return html`
       <div class="container">
-        <div class="segment" @click=${(e) => this.handle_segment_CLICK(e)}>
+        <div
+          class="segment"
+          @click=${(e: MouseEvent) => this.handle_segment_CLICK(e)}
+        >
           ${this.segment.enemies.map((enemy) => {
             return html`<div
               class="enemy"
@@ -47,7 +51,7 @@ export class SegmentElement extends LitElement {
             return html`<div
               class="ground-tile"
               style="left: ${i * GROUND_TILE_SIZE}px"
-              @click=${(e) => {
+              @click=${(e: MouseEvent) => {
                 e.stopPropagation();
                 this.segment.toggleGroundTile(i);
                 this.requestUpdate();

@@ -1,7 +1,5 @@
 import groundTile from "../../../public/assets/environment_ground_middle_variant.png";
 
-import { Enemy } from "./enemy";
-
 export const GROUND_TILE_IMG = groundTile;
 export const GROUND_TILES_PER_SEGMENT = 24;
 export const GROUND_TILE_SIZE = 6;
@@ -10,13 +8,13 @@ import { makeObservable, observable, action, autorun } from "mobx";
 
 interface ISegment {
   ground: number[];
-  enemies: number[];
+  enemies: number[][];
   items: number[];
 }
 
 export class Segment implements ISegment {
   ground: number[] = [];
-  enemies: number[] = [];
+  enemies: number[][] = [];
   items: number[] = [];
 
   constructor(data?: ISegment) {
@@ -59,7 +57,7 @@ export class Segment implements ISegment {
     this.ground = ground;
   }
 
-  addEnemy(type, x, y) {
+  addEnemy(type: number, x: number, y: number) {
     const enemies = [...this.enemies];
     //const enemy = new Enemy(type, x, y);
     const enemy = [type, x, y];
@@ -107,7 +105,7 @@ export class SegmentModel {
   }
 
   removeSegmentByIndex(index: number) {
-    this.segments = this.segments.filter((s, i) => i !== index);
+    this.segments = this.segments.filter((_, i) => i !== index);
     this.writeURL();
   }
 

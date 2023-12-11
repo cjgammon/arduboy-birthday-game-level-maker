@@ -1,4 +1,4 @@
-import { LitElement, css, html } from "lit";
+import { css, html } from "lit";
 import { customElement } from "lit/decorators.js";
 import segmentModel from "../model/segments";
 import { ENEMY_DEFINITIONS } from "../model/enemy";
@@ -16,7 +16,7 @@ export class Toolbar extends MobxLitElement {
         <button @click=${() => segmentModel.loadJSON()}>Load JSON</button>
       </div>
       <div>
-        ${ENEMY_DEFINITIONS.map((enemy, i) => {
+        ${ENEMY_DEFINITIONS.map((enemy) => {
           return html`<button
             ?selected=${appModel.selectedEnemy === enemy.type}
             @click=${() => {
