@@ -35,10 +35,11 @@ export class Segment implements ISegment {
       enemies: observable.deep,
       items: observable,
       toggleGroundTile: action,
-      addEnemy: action,
+      //addEnemy: action,
     });
 
     autorun(() => {
+      console.log("autorun");
       const event = new CustomEvent("segment-updated", {
         detail: {
           segment: this,
@@ -67,12 +68,6 @@ export class Segment implements ISegment {
 
   toJSON() {
     //convert enemies to json structure
-    /*
-    const enemies = this.enemies.map((enemy) => {
-      return [enemy.type, enemy.x, enemy.y];
-    });
-    */
-
     return {
       ground: this.ground,
       enemies: this.enemies,
