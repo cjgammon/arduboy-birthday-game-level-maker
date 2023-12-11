@@ -45,11 +45,13 @@ export class Segment implements ISegment {
           segment: this,
         },
       });
+      console.log("dispatch");
       window.dispatchEvent(event);
     });
   }
 
   toggleGroundTile(index: number) {
+    console.log("toggle");
     const ground = [...this.ground];
     ground[index] = ground[index] === 0 ? 1 : 0;
     this.ground = ground;
@@ -70,6 +72,7 @@ export class SegmentModel {
 
     //@ts-ignore
     window.addEventListener("segment-updated", (e: CustomEvent) => {
+      console.log("updtated");
       this.writeURL();
     });
   }
