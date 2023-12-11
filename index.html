@@ -1,41 +1,14 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <style>
-        #container{
-            transform-origin: 0 0;
-            transform: scale(4);
-        }
-        canvas {
-            border: 1px solid red;
-            image-rendering: pixelated;
-        }
-
-        .enemy{
-            border: 2px solid gray;
-            margin: 5px;
-            cursor: pointer;
-        }
-
-        .enemy.selected{
-            border: 2px solid blue;
-        }
-    </style>
-</head>
-<body>
-    <div id="ui">
-        <button id="addSegmentBtn">Add Segment</button>
-        <button id="exportBtn">Export</button>
-        <button id="loadBtn">Load</button>
-    </div>
-    <div id="container">
-
-    </div>
-    <script src="enemies.js"></script>
-    <script src="segment.js"></script>
-    <script src="main.js"></script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite + Lit + TS</title>
+    <link rel="stylesheet" href="./src/index.css" />
+    <script type="module" src="/src/editor-app.ts"></script>
+  </head>
+  <body>
+    <editor-app></editor-app>
+  </body>
 </html>
