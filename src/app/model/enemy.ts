@@ -1,3 +1,6 @@
+import trollSprite from "../../../public/assets/enemy~troll.png";
+import spiderSprite from "../../../public/assets/enemy~spiduh~a.png";
+
 export const ENEMY_TYPES = {
   NONE: 0,
   TROLL: 1,
@@ -11,7 +14,7 @@ export const ENEMY_DEFINITIONS = [
     cx: 14,
     cy: 20,
     cr: 10,
-    src: "assets/exports/enemy~troll.png",
+    src: trollSprite,
   },
   {
     type: 2,
@@ -19,6 +22,36 @@ export const ENEMY_DEFINITIONS = [
     cx: 12,
     cy: 20,
     cr: 10,
-    src: "assets/exports/enemy~spiduh~a.png",
+    src: spiderSprite,
   },
 ];
+
+export function getEnemyImage(type: number) {
+  const definition = ENEMY_DEFINITIONS.find((d) => d.type === type);
+  if (definition) {
+    return definition.src;
+  } else {
+    throw new Error("Unknown enemy type");
+  }
+}
+
+/*
+export class Enemy {
+  type: number;
+  x: number;
+  y: number;
+  src: string;
+  constructor(type, x, y) {
+    this.type = type;
+    this.x = x;
+    this.y = y;
+
+    const definition = ENEMY_DEFINITIONS.find((d) => d.type === type);
+    if (definition) {
+      this.src = definition.src;
+    } else {
+      throw new Error("Unknown enemy type");
+    }
+  }
+}
+*/
