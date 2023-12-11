@@ -1,4 +1,4 @@
-import groundTile from "../../assets/environment_ground_middle_variant.png";
+import groundTile from "../../../public/assets/environment_ground_middle_variant.png";
 
 export const GROUND_TILE_IMG = groundTile;
 export const GROUND_TILES_PER_SEGMENT = 24;
