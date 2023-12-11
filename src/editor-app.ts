@@ -20,7 +20,18 @@ export class EditorApp extends LitElement {
     `;
   }
 
-  static styles = css``;
+  static styles = css`
+    a-toolbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+    }
+
+    a-editor {
+      display: block;
+      padding-top: 64px;
+  `;
 }
 
 declare global {
