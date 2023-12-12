@@ -6,7 +6,7 @@ import segmentModel, {
   GROUND_TILE_SIZE,
   GROUND_TILE_IMG,
 } from "../model/segments";
-import { ENEMY_DEFINITIONS, getEnemyImage } from "../model/enemy";
+import { ENEMY_DEFINITIONS, ENEMY_SIZE, getEnemyImage } from "../model/enemy";
 
 import { Segment } from "../model/segments";
 import appModel from "../model/app";
@@ -96,7 +96,7 @@ export class SegmentElement extends LitElement {
       const rect = e.target.getBoundingClientRect();
       let x = e.clientX - rect.left;
 
-      x = Math.round(x / 4);
+      x = Math.round(x / 4) - ENEMY_SIZE / 2;
       this.segment.addEnemy(appModel.selectedEnemy!, x);
       this.requestUpdate();
     }

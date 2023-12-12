@@ -1,6 +1,8 @@
 import trollSprite from "../../../public/assets/enemy~troll.png";
 import spiderSprite from "../../../public/assets/enemy~spiduh~a.png";
 
+export const ENEMY_SIZE = 32;
+
 export const ENEMY_TYPES = {
   NONE: 0,
   TROLL: 1,
