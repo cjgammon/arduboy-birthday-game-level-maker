@@ -156,7 +156,29 @@ export class SegmentModel {
     this.segments.forEach((segment, index) => {
       cppString += `    // segment ${index}\n`;
       cppString += `  {\n`;
-      cppString += `    {${segment.ground.join(", ")}},\n`;
+
+      var floorBytes = [];
+      var byteCount = segment.ground.length / 8;
+      for (var byteIndex = 0; byteIndex < byteCount; byteIndex++)
+      {
+        floorBytes.push(0);
+      }
+
+      for (var tileIndex = 0; tileIndex < segment.ground.length; tileIndex++)
+      {
+        var tile = segment.ground[tileIndex];
+        var byteIndex = Math.floor(tileIndex / 8);
+        var bitIndex = tileIndex % 8;
+        if (tile != 0)
+        {
+          floorBytes[byteIndex] |= (1 << bitIndex);
+        }
+        
+
+        //console.log("tileIndex:" + tileIndex + ": byteIndex:" + byteIndex + " bitIndex: " + bitIndex);
+      }
+
+      cppString += `    {${floorBytes.join(", ")}},\n`;
       cppString += `    {\n`;
 
       segment.enemies.forEach((enemies) => {
