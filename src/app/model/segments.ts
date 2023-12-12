@@ -151,7 +151,10 @@ export class SegmentModel {
   }
 
   export() {
-    let cppString = "{\n";
+    let cppString = `#define GROUND_DEFINITION_COUNT ${this.segments.length}\n`;
+
+    cppString +=
+      "const SegmentDefinition groundDefinitions[GROUND_DEFINITION_COUNT] PROGMEM = {\n";
 
     this.segments.forEach((segment, index) => {
       cppString += `    // segment ${index}\n`;
@@ -159,21 +162,17 @@ export class SegmentModel {
 
       var floorBytes = [];
       var byteCount = segment.ground.length / 8;
-      for (var byteIndex = 0; byteIndex < byteCount; byteIndex++)
-      {
+      for (var byteIndex = 0; byteIndex < byteCount; byteIndex++) {
         floorBytes.push(0);
       }
 
-      for (var tileIndex = 0; tileIndex < segment.ground.length; tileIndex++)
-      {
+      for (var tileIndex = 0; tileIndex < segment.ground.length; tileIndex++) {
         var tile = segment.ground[tileIndex];
         var byteIndex = Math.floor(tileIndex / 8);
         var bitIndex = tileIndex % 8;
-        if (tile != 0)
-        {
-          floorBytes[byteIndex] |= (1 << bitIndex);
+        if (tile != 0) {
+          floorBytes[byteIndex] |= 1 << bitIndex;
         }
-        
 
         //console.log("tileIndex:" + tileIndex + ": byteIndex:" + byteIndex + " bitIndex: " + bitIndex);
       }
