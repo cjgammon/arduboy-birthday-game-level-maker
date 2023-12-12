@@ -6,7 +6,7 @@ import segmentModel, {
   GROUND_TILE_SIZE,
   GROUND_TILE_IMG,
 } from "../model/segments";
-import { ENEMY_DEFINITIONS, getEnemyImage } from "../model/enemy";
+import { ENEMY_DEFINITIONS, ENEMY_SIZE, getEnemyImage } from "../model/enemy";
 
 import { Segment } from "../model/segments";
 import appModel from "../model/app";
@@ -96,7 +96,7 @@ export class SegmentElement extends LitElement {
       const rect = e.target.getBoundingClientRect();
       let x = e.clientX - rect.left;
 
-      x = Math.round(x / 4);
+      x = Math.round(x / 4) - ENEMY_SIZE / 2;
       this.segment.addEnemy(appModel.selectedEnemy!, x);
       this.requestUpdate();
     }
@@ -150,6 +150,7 @@ export class SegmentElement extends LitElement {
           })}
         </div>
         <button
+          class="segment-delete-btn"
           @click=${() => {
             segmentModel.removeSegment(this.segment);
             this.requestUpdate();
@@ -169,6 +170,11 @@ export class SegmentElement extends LitElement {
       background-color: black;
       border: 2px solid blue;
       color: white;
+    }
+
+    .segment-delete-btn {
+      transform-origin: top left;
+      transform: scale(0.25);
     }
 
     .enemy {
