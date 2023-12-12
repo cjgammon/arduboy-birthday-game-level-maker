@@ -118,6 +118,16 @@ export class SegmentElement extends LitElement {
               class="enemy"
               style="left: ${enemy[1]}px; top: ${y}px"
             >
+              <button
+                class="enemy-delete-btn"
+                @click=${(e: MouseEvent) => {
+                  e.stopPropagation();
+                  this.segment.removeEnemy(enemy);
+                  this.requestUpdate();
+                }}
+              >
+                delete
+              </button>
               <img src="${getEnemyImage(enemy[0])}" />
             </div>`;
           })}
@@ -189,6 +199,14 @@ export class SegmentElement extends LitElement {
       width: 100%;
       height: 100%;
       image-rendering: pixelated;
+    }
+
+    .enemy-delete-btn {
+      position: absolute;
+      top: 0;
+      right: 0;
+      transform-origin: top right;
+      transform: scale(0.25);
     }
   `;
 }

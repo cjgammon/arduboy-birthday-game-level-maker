@@ -36,6 +36,7 @@ export class Segment implements ISegment {
       hideGroundTile: action,
       showGroundTile: action,
       addEnemy: action,
+      removeEnemy: action,
     });
 
     autorun(() => {
@@ -74,6 +75,11 @@ export class Segment implements ISegment {
     const enemy = [type, x];
     enemies.push(enemy);
     this.enemies = enemies;
+  }
+
+  removeEnemy(enemy: number[]) {
+    const enemies = [...this.enemies];
+    this.enemies = enemies.filter((e) => e !== enemy);
   }
 
   toJSON() {
