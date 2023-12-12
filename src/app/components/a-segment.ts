@@ -150,6 +150,7 @@ export class SegmentElement extends LitElement {
           })}
         </div>
         <button
+          class="segment-delete-btn"
           @click=${() => {
             segmentModel.removeSegment(this.segment);
             this.requestUpdate();
@@ -169,6 +170,11 @@ export class SegmentElement extends LitElement {
       background-color: black;
       border: 2px solid blue;
       color: white;
+    }
+
+    .segment-delete-btn {
+      transform-origin: top left;
+      transform: scale(0.25);
     }
 
     .enemy {
