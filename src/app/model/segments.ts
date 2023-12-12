@@ -33,7 +33,9 @@ export class Segment implements ISegment {
       enemies: observable,
       items: observable,
       toggleGroundTile: action,
-      //addEnemy: action,
+      hideGroundTile: action,
+      showGroundTile: action,
+      addEnemy: action,
     });
 
     autorun(() => {
@@ -45,22 +47,31 @@ export class Segment implements ISegment {
           items: this.items,
         },
       });
-      console.log("dispatch");
       window.dispatchEvent(event);
     });
   }
 
   toggleGroundTile(index: number) {
-    console.log("toggle");
     const ground = [...this.ground];
     ground[index] = ground[index] === 0 ? 1 : 0;
     this.ground = ground;
   }
 
-  addEnemy(type: number, x: number, y: number) {
+  hideGroundTile(index: number) {
+    const ground = [...this.ground];
+    ground[index] = 0;
+    this.ground = ground;
+  }
+
+  showGroundTile(index: number) {
+    const ground = [...this.ground];
+    ground[index] = 1;
+    this.ground = ground;
+  }
+
+  addEnemy(type: number, x: number) {
     const enemies = [...this.enemies];
-    //const enemy = new Enemy(type, x, y);
-    const enemy = [type, x, y];
+    const enemy = [type, x];
     enemies.push(enemy);
     this.enemies = enemies;
   }
