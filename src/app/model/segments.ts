@@ -9,19 +9,19 @@ import { makeObservable, observable, action, autorun } from "mobx";
 interface ISegment {
   ground: number[];
   enemies: number[][];
-  items: number[];
+  items: number[][];
 }
 
 export class Segment implements ISegment {
   ground: number[] = [];
   enemies: number[][] = [];
-  items: number[] = [];
+  items: number[][] = [];
 
   constructor(data?: ISegment) {
     if (data) {
       this.ground = data.ground;
       this.enemies = data.enemies;
-      //this.items = data.items;
+      this.items = data.items;
     } else {
       for (let i = 0; i < GROUND_TILES_PER_SEGMENT; i++) {
         this.ground.push(1);
@@ -37,6 +37,8 @@ export class Segment implements ISegment {
       showGroundTile: action,
       addEnemy: action,
       removeEnemy: action,
+      addCoin: action,
+      removeCoin: action,
     });
 
     autorun(() => {
@@ -80,6 +82,18 @@ export class Segment implements ISegment {
   removeEnemy(enemy: number[]) {
     const enemies = [...this.enemies];
     this.enemies = enemies.filter((e) => e !== enemy);
+  }
+
+  addCoin(type: number, x: number) {
+    const items = [...this.items];
+    const item = [type, x];
+    items.push(item);
+    this.items = items;
+  }
+
+  removeCoin(coin: number[]) {
+    const items = [...this.items];
+    this.items = items.filter((c) => c !== coin);
   }
 
   toJSON() {
@@ -187,9 +201,8 @@ export class SegmentModel {
       cppString += `    },\n`;
       cppString += `    {\n`;
 
-      segment.items.forEach(() => {
-        //cppString += `      {${item.join(", ")}}, // Item\n`;
-        cppString += `      {},\n`;
+      segment.items.forEach((item) => {
+        cppString += `      {${item.join(", ")}}, // Item\n`;
       });
 
       cppString += `    }\n`;

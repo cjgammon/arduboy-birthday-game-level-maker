@@ -2,7 +2,7 @@ import { css, html } from "lit";
 import { customElement } from "lit/decorators.js";
 import segmentModel from "../model/segments";
 import { ENEMY_DEFINITIONS } from "../model/enemy";
-import { COIN_LAYOUTS, COIN_LAYOUT_TYPES } from "../model/coins";
+import { COIN_LAYOUTS } from "../model/coins";
 import appModel from "../model/app";
 import { MobxLitElement } from "@adobe/lit-mobx";
 

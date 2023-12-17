@@ -7,7 +7,6 @@ import segmentModel, {
   GROUND_TILE_IMG,
 } from "../model/segments";
 import { ENEMY_DEFINITIONS, ENEMY_SIZE, getEnemyImage } from "../model/enemy";
-import { COIN_LAYOUT_TYPES } from "../model/coins";
 
 import { Segment } from "../model/segments";
 import appModel from "../model/app";
@@ -101,6 +100,15 @@ export class SegmentElement extends LitElement {
       this.segment.addEnemy(appModel.selectedEnemy!, x);
       this.requestUpdate();
     }
+
+    if (appModel.selectedCoin !== null && e.target instanceof HTMLElement) {
+      const rect = e.target.getBoundingClientRect();
+      let x = e.clientX - rect.left;
+
+      x = Math.round(x / 4);
+      this.segment.addCoin(appModel.selectedCoin!, x);
+      this.requestUpdate();
+    }
   }
 
   renderEnemies() {
@@ -146,14 +154,21 @@ export class SegmentElement extends LitElement {
   }
 
   renderCoins() {
-    /*
-    return this.segment.coins.map((coin) => {
-      const coinLayout = COIN_LAYOUT_TYPES[coin[0]];
+    return this.segment.items.map((coin) => {
       return html`<div class="coin" style="left: ${coin[1]}px; top: 0">
-        <img src="${coinLayout}" />
+        <button
+          class="coin-delete-btn"
+          @click=${(e: MouseEvent) => {
+            e.stopPropagation();
+            this.segment.removeCoin(coin);
+            this.requestUpdate();
+          }}
+        >
+          delete
+        </button>
+        ${coin[0]}
       </div>`;
     });
-    */
   }
 
   render() {
@@ -194,6 +209,11 @@ export class SegmentElement extends LitElement {
       transform: scale(0.25);
     }
 
+    .coin {
+      position: absolute;
+      color: white;
+    }
+
     .enemy {
       position: absolute;
       width: 32px;
@@ -224,7 +244,8 @@ export class SegmentElement extends LitElement {
       image-rendering: pixelated;
     }
 
-    .enemy-delete-btn {
+    .enemy-delete-btn,
+    .coin-delete-btn {
       position: absolute;
       top: 0;
       right: 0;
