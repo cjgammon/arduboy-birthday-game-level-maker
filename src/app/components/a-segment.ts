@@ -7,6 +7,7 @@ import segmentModel, {
   GROUND_TILE_IMG,
 } from "../model/segments";
 import { ENEMY_DEFINITIONS, ENEMY_SIZE, getEnemyImage } from "../model/enemy";
+import { COIN_LAYOUT_TYPES } from "../model/coins";
 
 import { Segment } from "../model/segments";
 import appModel from "../model/app";
@@ -102,6 +103,59 @@ export class SegmentElement extends LitElement {
     }
   }
 
+  renderEnemies() {
+    return this.segment.enemies.map((enemy) => {
+      const enemyDefinition = ENEMY_DEFINITIONS.find(
+        (d) => d.type === enemy[0]
+      );
+      const y = enemyDefinition!.y;
+      return html`<div class="enemy" style="left: ${enemy[1]}px; top: ${y}px">
+        <button
+          class="enemy-delete-btn"
+          @click=${(e: MouseEvent) => {
+            e.stopPropagation();
+            this.segment.removeEnemy(enemy);
+            this.requestUpdate();
+          }}
+        >
+          delete
+        </button>
+        <img src="${getEnemyImage(enemy[0])}" />
+      </div>`;
+    });
+  }
+
+  renderGroundTiles() {
+    return this.segment.ground.map((value, i) => {
+      return html`<div
+        draggable="false"
+        class="ground-tile"
+        style="left: ${i * GROUND_TILE_SIZE}px"
+        data-index=${i}
+        @pointerdown=${(e: PointerEvent) =>
+          this.handle_ground_POINTERDOWN(e, value)}
+        @click=${(e: MouseEvent) => {
+          e.stopPropagation();
+          this.segment.toggleGroundTile(i);
+          this.requestUpdate();
+        }}
+      >
+        <img src="${value === 1 ? GROUND_TILE_IMG : ""}" />
+      </div>`;
+    });
+  }
+
+  renderCoins() {
+    /*
+    return this.segment.coins.map((coin) => {
+      const coinLayout = COIN_LAYOUT_TYPES[coin[0]];
+      return html`<div class="coin" style="left: ${coin[1]}px; top: 0">
+        <img src="${coinLayout}" />
+      </div>`;
+    });
+    */
+  }
+
   render() {
     return html`
       <div class="container">
@@ -109,45 +163,8 @@ export class SegmentElement extends LitElement {
           class="segment"
           @click=${(e: MouseEvent) => this.handle_segment_CLICK(e)}
         >
-          ${this.segment.enemies.map((enemy) => {
-            const enemyDefinition = ENEMY_DEFINITIONS.find(
-              (d) => d.type === enemy[0]
-            );
-            const y = enemyDefinition!.y;
-            return html`<div
-              class="enemy"
-              style="left: ${enemy[1]}px; top: ${y}px"
-            >
-              <button
-                class="enemy-delete-btn"
-                @click=${(e: MouseEvent) => {
-                  e.stopPropagation();
-                  this.segment.removeEnemy(enemy);
-                  this.requestUpdate();
-                }}
-              >
-                delete
-              </button>
-              <img src="${getEnemyImage(enemy[0])}" />
-            </div>`;
-          })}
-          ${this.segment.ground.map((value, i) => {
-            return html`<div
-              draggable="false"
-              class="ground-tile"
-              style="left: ${i * GROUND_TILE_SIZE}px"
-              data-index=${i}
-              @pointerdown=${(e: PointerEvent) =>
-                this.handle_ground_POINTERDOWN(e, value)}
-              @click=${(e: MouseEvent) => {
-                e.stopPropagation();
-                this.segment.toggleGroundTile(i);
-                this.requestUpdate();
-              }}
-            >
-              <img src="${value === 1 ? GROUND_TILE_IMG : ""}" />
-            </div>`;
-          })}
+          ${this.renderCoins()} ${this.renderEnemies()}
+          ${this.renderGroundTiles()}
         </div>
         <button
           class="segment-delete-btn"

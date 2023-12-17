@@ -1,0 +1,14 @@
+export const COIN_LAYOUT_TYPES = {
+  NONE: 0,
+  ONE: 1,
+  TWO: 2,
+  THREE: 3,
+  FOUR: 4,
+};
+
+export const COIN_LAYOUTS = [
+  COIN_LAYOUT_TYPES.ONE,
+  COIN_LAYOUT_TYPES.TWO,
+  COIN_LAYOUT_TYPES.THREE,
+  COIN_LAYOUT_TYPES.FOUR,
+];
