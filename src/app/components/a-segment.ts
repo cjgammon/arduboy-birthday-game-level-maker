@@ -190,6 +190,14 @@ export class SegmentElement extends LitElement {
         >
           -
         </button>
+        <input class="segment-difficulty-input" 
+            @change=${(e: Event) => {
+              this.segment.setDifficulty(
+                parseInt((e.target as HTMLInputElement).value)
+              );
+              this.requestUpdate();
+            }}
+            value=${this.segment.difficulty} type="number"></input>
       </div>
     `;
   }
@@ -251,6 +259,12 @@ export class SegmentElement extends LitElement {
       right: 0;
       transform-origin: top right;
       transform: scale(0.25);
+    }
+
+    .segment-difficulty-input {
+      transform-origin: top left;
+      transform: scale(0.25);
+      width: 64px;
     }
   `;
 }

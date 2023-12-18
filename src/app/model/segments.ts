@@ -10,18 +10,21 @@ interface ISegment {
   ground: number[];
   enemies: number[][];
   items: number[][];
+  difficulty: number;
 }
 
 export class Segment implements ISegment {
   ground: number[] = [];
   enemies: number[][] = [];
   items: number[][] = [];
+  difficulty: number = 0;
 
   constructor(data?: ISegment) {
     if (data) {
       this.ground = data.ground;
       this.enemies = data.enemies;
       this.items = data.items;
+      this.difficulty = data.difficulty || 0;
     } else {
       for (let i = 0; i < GROUND_TILES_PER_SEGMENT; i++) {
         this.ground.push(1);
@@ -32,6 +35,7 @@ export class Segment implements ISegment {
       ground: observable,
       enemies: observable,
       items: observable,
+      difficulty: observable,
       toggleGroundTile: action,
       hideGroundTile: action,
       showGroundTile: action,
@@ -39,6 +43,7 @@ export class Segment implements ISegment {
       removeEnemy: action,
       addCoin: action,
       removeCoin: action,
+      setDifficulty: action,
     });
 
     autorun(() => {
@@ -48,10 +53,15 @@ export class Segment implements ISegment {
           ground: this.ground,
           enemies: this.enemies,
           items: this.items,
+          difficulty: this.difficulty,
         },
       });
       window.dispatchEvent(event);
     });
+  }
+
+  setDifficulty(difficulty: number) {
+    this.difficulty = difficulty;
   }
 
   toggleGroundTile(index: number) {
@@ -102,6 +112,7 @@ export class Segment implements ISegment {
       ground: this.ground,
       enemies: this.enemies,
       items: this.items,
+      difficulty: this.difficulty,
     };
   }
 }
@@ -207,6 +218,8 @@ export class SegmentModel {
 
       cppString += `    }\n`;
       cppString += `  },\n`;
+
+      cppString += `{${segment.difficulty}}\n`;
     });
 
     cppString += "};\n";
