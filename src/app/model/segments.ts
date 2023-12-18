@@ -216,10 +216,9 @@ export class SegmentModel {
         cppString += `      {${item.join(", ")}}, // Item\n`;
       });
 
-      cppString += `    }\n`;
+      cppString += `    },\n`;
+      cppString += `    {${segment.difficulty}} //Difficulty\n`;
       cppString += `  },\n`;
-
-      cppString += `{${segment.difficulty}}\n`;
     });
 
     cppString += "};\n";
