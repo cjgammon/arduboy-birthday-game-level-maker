@@ -217,7 +217,7 @@ export class SegmentModel {
       });
 
       cppString += `    },\n`;
-      cppString += `    {${segment.difficulty}} //Difficulty\n`;
+      cppString += `    ${segment.difficulty} //Difficulty\n`;
       cppString += `  },\n`;
     });
 
