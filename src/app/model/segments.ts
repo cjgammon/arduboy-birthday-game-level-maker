@@ -9,19 +9,22 @@ import { makeObservable, observable, action, autorun } from "mobx";
 interface ISegment {
   ground: number[];
   enemies: number[][];
-  items: number[];
+  items: number[][];
+  difficulty: number;
 }
 
 export class Segment implements ISegment {
   ground: number[] = [];
   enemies: number[][] = [];
-  items: number[] = [];
+  items: number[][] = [];
+  difficulty: number = 0;
 
   constructor(data?: ISegment) {
     if (data) {
       this.ground = data.ground;
       this.enemies = data.enemies;
-      //this.items = data.items;
+      this.items = data.items;
+      this.difficulty = data.difficulty || 0;
     } else {
       for (let i = 0; i < GROUND_TILES_PER_SEGMENT; i++) {
         this.ground.push(1);
@@ -32,11 +35,15 @@ export class Segment implements ISegment {
       ground: observable,
       enemies: observable,
       items: observable,
+      difficulty: observable,
       toggleGroundTile: action,
       hideGroundTile: action,
       showGroundTile: action,
       addEnemy: action,
       removeEnemy: action,
+      addCoin: action,
+      removeCoin: action,
+      setDifficulty: action,
     });
 
     autorun(() => {
@@ -46,10 +53,15 @@ export class Segment implements ISegment {
           ground: this.ground,
           enemies: this.enemies,
           items: this.items,
+          difficulty: this.difficulty,
         },
       });
       window.dispatchEvent(event);
     });
+  }
+
+  setDifficulty(difficulty: number) {
+    this.difficulty = difficulty;
   }
 
   toggleGroundTile(index: number) {
@@ -82,12 +94,25 @@ export class Segment implements ISegment {
     this.enemies = enemies.filter((e) => e !== enemy);
   }
 
+  addCoin(type: number, x: number) {
+    const items = [...this.items];
+    const item = [type, x];
+    items.push(item);
+    this.items = items;
+  }
+
+  removeCoin(coin: number[]) {
+    const items = [...this.items];
+    this.items = items.filter((c) => c !== coin);
+  }
+
   toJSON() {
     //convert enemies to json structure
     return {
       ground: this.ground,
       enemies: this.enemies,
       items: this.items,
+      difficulty: this.difficulty,
     };
   }
 }
@@ -187,12 +212,12 @@ export class SegmentModel {
       cppString += `    },\n`;
       cppString += `    {\n`;
 
-      segment.items.forEach(() => {
-        //cppString += `      {${item.join(", ")}}, // Item\n`;
-        cppString += `      {},\n`;
+      segment.items.forEach((item) => {
+        cppString += `      {${item.join(", ")}}, // Item\n`;
       });
 
-      cppString += `    }\n`;
+      cppString += `    },\n`;
+      cppString += `    ${segment.difficulty} //Difficulty\n`;
       cppString += `  },\n`;
     });
 

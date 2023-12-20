@@ -100,6 +100,75 @@ export class SegmentElement extends LitElement {
       this.segment.addEnemy(appModel.selectedEnemy!, x);
       this.requestUpdate();
     }
+
+    if (appModel.selectedCoin !== null && e.target instanceof HTMLElement) {
+      const rect = e.target.getBoundingClientRect();
+      let x = e.clientX - rect.left;
+
+      x = Math.round(x / 4);
+      this.segment.addCoin(appModel.selectedCoin!, x);
+      this.requestUpdate();
+    }
+  }
+
+  renderEnemies() {
+    return this.segment.enemies.map((enemy) => {
+      const enemyDefinition = ENEMY_DEFINITIONS.find(
+        (d) => d.type === enemy[0]
+      );
+      const y = enemyDefinition!.y;
+      return html`<div class="enemy" style="left: ${enemy[1]}px; top: ${y}px">
+        <button
+          class="enemy-delete-btn"
+          @click=${(e: MouseEvent) => {
+            e.stopPropagation();
+            this.segment.removeEnemy(enemy);
+            this.requestUpdate();
+          }}
+        >
+          delete
+        </button>
+        <img src="${getEnemyImage(enemy[0])}" />
+      </div>`;
+    });
+  }
+
+  renderGroundTiles() {
+    return this.segment.ground.map((value, i) => {
+      return html`<div
+        draggable="false"
+        class="ground-tile"
+        style="left: ${i * GROUND_TILE_SIZE}px"
+        data-index=${i}
+        @pointerdown=${(e: PointerEvent) =>
+          this.handle_ground_POINTERDOWN(e, value)}
+        @click=${(e: MouseEvent) => {
+          e.stopPropagation();
+          this.segment.toggleGroundTile(i);
+          this.requestUpdate();
+        }}
+      >
+        <img src="${value === 1 ? GROUND_TILE_IMG : ""}" />
+      </div>`;
+    });
+  }
+
+  renderCoins() {
+    return this.segment.items.map((coin) => {
+      return html`<div class="coin" style="left: ${coin[1]}px; top: 0">
+        <button
+          class="coin-delete-btn"
+          @click=${(e: MouseEvent) => {
+            e.stopPropagation();
+            this.segment.removeCoin(coin);
+            this.requestUpdate();
+          }}
+        >
+          delete
+        </button>
+        ${coin[0]}
+      </div>`;
+    });
   }
 
   render() {
@@ -109,45 +178,8 @@ export class SegmentElement extends LitElement {
           class="segment"
           @click=${(e: MouseEvent) => this.handle_segment_CLICK(e)}
         >
-          ${this.segment.enemies.map((enemy) => {
-            const enemyDefinition = ENEMY_DEFINITIONS.find(
-              (d) => d.type === enemy[0]
-            );
-            const y = enemyDefinition!.y;
-            return html`<div
-              class="enemy"
-              style="left: ${enemy[1]}px; top: ${y}px"
-            >
-              <button
-                class="enemy-delete-btn"
-                @click=${(e: MouseEvent) => {
-                  e.stopPropagation();
-                  this.segment.removeEnemy(enemy);
-                  this.requestUpdate();
-                }}
-              >
-                delete
-              </button>
-              <img src="${getEnemyImage(enemy[0])}" />
-            </div>`;
-          })}
-          ${this.segment.ground.map((value, i) => {
-            return html`<div
-              draggable="false"
-              class="ground-tile"
-              style="left: ${i * GROUND_TILE_SIZE}px"
-              data-index=${i}
-              @pointerdown=${(e: PointerEvent) =>
-                this.handle_ground_POINTERDOWN(e, value)}
-              @click=${(e: MouseEvent) => {
-                e.stopPropagation();
-                this.segment.toggleGroundTile(i);
-                this.requestUpdate();
-              }}
-            >
-              <img src="${value === 1 ? GROUND_TILE_IMG : ""}" />
-            </div>`;
-          })}
+          ${this.renderCoins()} ${this.renderEnemies()}
+          ${this.renderGroundTiles()}
         </div>
         <button
           class="segment-delete-btn"
@@ -158,6 +190,14 @@ export class SegmentElement extends LitElement {
         >
           -
         </button>
+        <input class="segment-difficulty-input" 
+            @change=${(e: Event) => {
+              this.segment.setDifficulty(
+                parseInt((e.target as HTMLInputElement).value)
+              );
+              this.requestUpdate();
+            }}
+            value=${this.segment.difficulty} type="number"></input>
       </div>
     `;
   }
@@ -175,6 +215,11 @@ export class SegmentElement extends LitElement {
     .segment-delete-btn {
       transform-origin: top left;
       transform: scale(0.25);
+    }
+
+    .coin {
+      position: absolute;
+      color: white;
     }
 
     .enemy {
@@ -207,12 +252,19 @@ export class SegmentElement extends LitElement {
       image-rendering: pixelated;
     }
 
-    .enemy-delete-btn {
+    .enemy-delete-btn,
+    .coin-delete-btn {
       position: absolute;
       top: 0;
       right: 0;
       transform-origin: top right;
       transform: scale(0.25);
+    }
+
+    .segment-difficulty-input {
+      transform-origin: top left;
+      transform: scale(0.25);
+      width: 64px;
     }
   `;
 }
