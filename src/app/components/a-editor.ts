@@ -8,6 +8,12 @@ import "./a-segment";
 
 @customElement("a-editor")
 export class Editor extends MobxLitElement {
+  //sort segments by difficulty
+  constructor() {
+    super();
+    segmentModel.segments.sort((a, b) => a.difficulty - b.difficulty);
+  }
+
   render() {
     return html`<div class="container">
       ${segmentModel.segments.map(
@@ -19,7 +25,6 @@ export class Editor extends MobxLitElement {
   static styles = css`
     .container {
       display: flex;
-      overflow-x: scroll;
       transform-origin: top left;
       transform: scale(4);
     }
